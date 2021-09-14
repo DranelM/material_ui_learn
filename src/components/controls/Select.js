@@ -1,15 +1,16 @@
 import React from 'react';
 import {
   FormControl,
+  FormHelperText,
   InputLabel,
   Select as MuiSelect,
 } from '@material-ui/core';
 
 export const Select = (props) => {
-  const { name, value, label, options, onChange } = props;
+  const { name, value, label, options, onChange, error = null } = props;
 
   return (
-    <FormControl variant="outlined">
+    <FormControl variant="outlined" {...(error && { error: true })}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect name={name} onChange={onChange} value={value} label={label}>
         <option value="">None</option>
@@ -19,6 +20,7 @@ export const Select = (props) => {
           </option>
         ))}
       </MuiSelect>
+      {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };
