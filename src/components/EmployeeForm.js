@@ -1,4 +1,4 @@
-import { Checkbox, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Form, useForm } from './useForm';
 import Controls from './controls/Controls.js';
 import * as services from '../services/employeeService.js';

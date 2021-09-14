@@ -1,22 +1,36 @@
 import {
   FormControl,
   FormControlLabel,
-  FormGroup,
-  FormLabel,
+  Checkbox as MuiCheckbox,
 } from '@material-ui/core';
 import React from 'react';
 
 export const Checkbox = (props) => {
-  const { name, value, onChange, label } = props;
+  const { name, label, value, onChange } = props;
+
+  function convertOutputToOnchangeAtrs(name, value) {
+    return {
+      target: {
+        name,
+        value,
+      },
+    };
+  }
+
   return (
     <FormControl>
-      <FormLabel>{label}</FormLabel>
-      <FormGroup>
-        <FormControlLabel
-          control={<Checkbox checked={value} onChange={onChange} name={name} />}
-          label={label}
-        />
-      </FormGroup>
+      <FormControlLabel
+        control={
+          <MuiCheckbox
+            checked={value}
+            onChange={(e) =>
+              onChange(convertOutputToOnchangeAtrs(name, e.target.checked))
+            }
+            name={name}
+          />
+        }
+        label={label}
+      />
     </FormControl>
   );
 };
