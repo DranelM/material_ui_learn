@@ -7,8 +7,7 @@ import {
   MuiThemeProvider,
 } from '@material-ui/core';
 import NavigationBar from '../components/NavigationBar';
-import PageHeader from './PageHeader';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import { Employees } from '../components/Employees';
 
 const theme = createTheme({
   palette: {
@@ -22,6 +21,14 @@ const theme = createTheme({
     },
     background: {
       default: '#f4f5fd',
+    },
+  },
+
+  overrides: {
+    MuiAppBar: {
+      root: {
+        transform: 'translateZ(0)',
+      },
     },
   },
 });
@@ -38,11 +45,7 @@ function App() {
       <LeftBar />
       <div className={classes.appMain}>
         <NavigationBar />
-        <PageHeader
-          title="Page title"
-          subtitle="Page description"
-          icon={<PlayArrowIcon />}
-        />
+        <Employees />
       </div>
       <CssBaseline />
     </MuiThemeProvider>
