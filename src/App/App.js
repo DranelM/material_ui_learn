@@ -11,7 +11,7 @@ import { Employees } from '../components/Employees';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#473ddc', light: '#e1f1ff' },
+    primary: { main: '#23349e', light: '#e1f1ff' },
     secondary: {
       main: '#dc3d3d',
       light: '#000',

@@ -3,6 +3,7 @@ import {
   Table,
   TableContainer as MuiTableContainer,
   TablePagination,
+  TableSortLabel,
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import {
@@ -36,7 +37,8 @@ export const useTable = (records, headCells) => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPagesOptions[page]);
-
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState(Object.keys(headCells)[0]);
   function handleChangePage(e, newPage) {
     setPage(newPage);
   }
@@ -47,7 +49,12 @@ export const useTable = (records, headCells) => {
   }
 
   function rowsAfterPagingAndSorting() {
-    return records.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    return records
+      .sort((a, b) => {
+        if (order === 'asc') return a[orderBy] > b[orderBy] ? 1 : -1;
+        if (order === 'desc') return a[orderBy] < b[orderBy] ? 1 : -1;
+      })
+      .slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   }
 
   const TableContainer = (props) => {
@@ -70,11 +77,27 @@ export const useTable = (records, headCells) => {
   };
 
   const TableHead = (props) => {
+    function handleRequestSort(property) {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    }
+
     return (
       <MuiTableHead>
         <TableRow>
-          {headCells.map((cell) => (
-            <TableCell key={cell.id}>{cell.label}</TableCell>
+          {headCells.map((headCell) => (
+            <>
+              <TableCell key={headCell.id}>
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : 'asc'}
+                  onClick={(e) => handleRequestSort(headCell.id)}
+                >
+                  {headCell.label}
+                </TableSortLabel>
+              </TableCell>
+            </>
           ))}
         </TableRow>
       </MuiTableHead>
