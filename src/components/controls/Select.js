@@ -15,7 +15,7 @@ export const Select = (props) => {
       <MuiSelect name={name} onChange={onChange} value={value} label={label}>
         <option value="">None</option>
         {options.map((option) => (
-          <option key={option.title} value={option.title}>
+          <option key={option.title} value={option.id}>
             {option.title}
           </option>
         ))}

@@ -26,7 +26,7 @@ const EmployeeForm = () => {
     useForm(initialValues, true, validation);
 
   function validation(validatedArgs = values) {
-    let temp = {};
+    let temp = { ...errors };
 
     if ('fullName' in validatedArgs)
       temp.fullName = validatedArgs.fullName.length ? '' : 'Enter Your Name';
@@ -43,10 +43,11 @@ const EmployeeForm = () => {
     if ('city' in validatedArgs)
       temp.city = validatedArgs.city.length ? '' : 'Enter city name';
 
-    if ('departmentId' in validatedArgs)
+    if ('departmentId' in validatedArgs) {
       temp.departmentId = validatedArgs.departmentId.length
         ? ''
         : 'Select department';
+    }
 
     setErrors({ ...temp });
     if (validatedArgs === values)
@@ -56,7 +57,9 @@ const EmployeeForm = () => {
   function handleSubmit(e) {
     e.preventDefault();
     if (validation()) {
-      window.alert('Everything fine');
+      services.saveNewEmployee(values);
+      window.alert('Employee Added');
+      resetForm();
     }
   }
 
@@ -105,7 +108,7 @@ const EmployeeForm = () => {
             label="Departments"
             name="departmentId"
             value={values.departmentId}
-            options={services.getDeparmentCollection()}
+            options={services.getDepartmentCollection()}
             onChange={handleInputChange}
             error={errors.departmentId}
           />
