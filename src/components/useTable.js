@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const useTable = (records, headCells) => {
+export const useTable = (records, headCells, searchFn) => {
   const classes = useStyles();
   const rowsPerPagesOptions = [5, 10, 15];
 
@@ -39,6 +39,7 @@ export const useTable = (records, headCells) => {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPagesOptions[page]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(Object.keys(headCells)[0]);
+
   function handleChangePage(e, newPage) {
     setPage(newPage);
   }
@@ -49,7 +50,8 @@ export const useTable = (records, headCells) => {
   }
 
   function rowsAfterPagingAndSorting() {
-    return records
+    return searchFn
+      .fn(records)
       .sort((a, b) => {
         if (order === 'asc') return a[orderBy] > b[orderBy] ? 1 : -1;
         if (order === 'desc') return a[orderBy] < b[orderBy] ? 1 : -1;
