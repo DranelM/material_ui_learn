@@ -21,9 +21,9 @@ const initialValues = {
   isPermanent: false,
 };
 
-const EmployeeForm = () => {
+const EmployeeForm = (props) => {
   const { values, setValues, handleInputChange, errors, setErrors, resetForm } =
-    useForm(initialValues, true, validation);
+    useForm(props.valuesToEdit || initialValues, true, validation);
 
   function validation(validatedArgs = values) {
     let temp = { ...errors };
@@ -57,9 +57,14 @@ const EmployeeForm = () => {
   function handleSubmit(e) {
     e.preventDefault();
     if (validation()) {
-      services.saveNewEmployee(values);
-      window.alert('Employee Added');
-      resetForm();
+      if (props.valuesToEdit) {
+        services.editEmployee(values);
+        window.alert('Employee Data Edited');
+      } else {
+        services.saveNewEmployee(values);
+        window.alert('Employee Added');
+        resetForm();
+      }
     }
   }
 

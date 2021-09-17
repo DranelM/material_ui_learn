@@ -3,6 +3,7 @@ import PageHeader from './PageHeader';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import EmployeeForm from './EmployeeForm';
 import {
+  Grid,
   InputAdornment,
   makeStyles,
   Paper,
@@ -14,7 +15,9 @@ import { useTable } from './useTable';
 import * as employeeServices from '../services/employeeService';
 import Controls from './controls/Controls';
 
+import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 
 const headCells = [
   {
@@ -45,13 +48,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   searchPanel: {
-    width: '75%',
+    width: '100%',
   },
 }));
 
 export const Employees = () => {
   const classes = useStyles();
   const [records, setRecords] = useState(employeeServices.getAllEmployees());
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const [searchFn, setSearchFn] = useState({ fn: (items) => items });
   const { TableContainer, TableHead, TableBody } = useTable(
     records,
@@ -73,6 +78,15 @@ export const Employees = () => {
     });
   }
 
+  function handlePopupOpen() {
+    setIsPopupOpen(true);
+  }
+
+  function handlePopupClose() {
+    setIsPopupOpen(false);
+    setRecords(employeeServices.getAllEmployees());
+  }
+
   return (
     <>
       <PageHeader
@@ -82,22 +96,48 @@ export const Employees = () => {
       />
       <Paper className={classes.pageContent}>
         <Toolbar>
-          <Controls.InputField
-            className={classes.searchPanel}
-            label="Search employee"
-            onChange={handleSearch}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon fontSize="small" />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Grid container>
+            <Grid item xs={10}>
+              <Controls.InputField
+                className={classes.searchPanel}
+                label="Search employee"
+                onChange={handleSearch}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs />
+            <Grid item>
+              <Controls.Button
+                variant="outlined"
+                name="Add Employee"
+                onClick={handlePopupOpen}
+                startIcon={<AddIcon />}
+                size="small"
+              />
+              <Controls.PopupDialog
+                open={isPopupOpen}
+                onClose={handlePopupClose}
+                title="Create New Employee"
+              >
+                <EmployeeForm />
+              </Controls.PopupDialog>
+            </Grid>
+          </Grid>
         </Toolbar>
         <TableContainer>
           <TableHead />
-          <TableBody />
+          <TableBody
+            editPopupTitle="Edit Employee Data"
+            deletePopupTitle="Are you sure you want to delete this employee?"
+            onChange={handlePopupClose}
+            deleteFunction={employeeServices.deleteEmployeeById}
+          />
         </TableContainer>
       </Paper>
     </>

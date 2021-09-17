@@ -4,6 +4,8 @@ import { Select } from './Select';
 import { Checkbox } from './Checkbox';
 import { DatePicker } from './DatePicker';
 import { Button } from './Button';
+import { PopupDialog } from './PopupDialog';
+import { SquareButton } from './SquareButton';
 
 const Controls = {
   InputField,
@@ -12,6 +14,8 @@ const Controls = {
   Checkbox,
   DatePicker,
   Button,
+  PopupDialog,
+  SquareButton,
 };
 
 export default Controls;
