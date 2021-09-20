@@ -1,27 +1,29 @@
 import React from 'react';
-import { makeStyles, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components/macro';
+import { withTheme } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: (props) => ({
-    border: `1px solid ${theme.palette[props.color].main}`,
-    background: theme.palette[props.color].light,
-    minWidth: '0px',
-    margin: theme.spacing(0.5),
-    '& .MuiSvgIcon-root': {
-      color: theme.palette[props.color].main,
-    },
-    '& .MuiButton-label': {
-      pointerEvents: 'none',
-    },
-  }),
-}));
+const StyledButton = withTheme(styled(Button)`
+  border: 1px solid ${(props) => props.theme.palette[props.color].main};
+  background-color: ${(props) => props.theme.palette[props.color].light};
+  min-width: 0px;
+  margin: 0.25rem;
+
+  & .MuiSvgIcon-root {
+    color: ${(props) => props.theme.palette[props.color].main};
+  }
+
+  & .MuiButton-label {
+    pointer-events: none;
+  }
+`);
 
 export const SquareButton = (props) => {
   const { color = 'primary', ...other } = props;
-  const classes = useStyles({ color });
+
   return (
-    <Button className={classes.root} {...other}>
+    <StyledButton color={color} {...other}>
       {props.children}
-    </Button>
+    </StyledButton>
   );
 };

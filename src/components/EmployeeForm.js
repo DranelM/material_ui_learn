@@ -22,8 +22,12 @@ const initialValues = {
 };
 
 const EmployeeForm = (props) => {
-  const { values, setValues, handleInputChange, errors, setErrors, resetForm } =
-    useForm(props.valuesToEdit || initialValues, true, validation);
+  const { handleNotificationOpen } = props;
+  const { values, handleInputChange, errors, setErrors, resetForm } = useForm(
+    props.valuesToEdit || initialValues,
+    true,
+    validation
+  );
 
   function validation(validatedArgs = values) {
     let temp = { ...errors };
@@ -59,10 +63,10 @@ const EmployeeForm = (props) => {
     if (validation()) {
       if (props.valuesToEdit) {
         services.editEmployee(values);
-        window.alert('Employee Data Edited');
+        handleNotificationOpen('Successfully Edited Employee', 'success');
       } else {
         services.saveNewEmployee(values);
-        window.alert('Employee Added');
+        handleNotificationOpen('Successfully Added Employee', 'success');
         resetForm();
       }
     }
